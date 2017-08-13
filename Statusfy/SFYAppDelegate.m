@@ -46,7 +46,7 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
     [self.statusItem setMenu:menu];
     
     [self setStatusItemTitle];
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(setStatusItemTitle) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:.25 target:self selector:@selector(setStatusItemTitle) userInfo:nil repeats:YES];
 }
 
 #pragma mark - Setting title text
@@ -63,18 +63,14 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
             PlayerState playerState = [self determinePlayerStateText];
 
             if (playerState == paused) {
-                titleText = [NSString stringWithFormat:@"(%@)", titleText];
+                titleText = [NSString stringWithFormat:@"[%@]", titleText];
             }
         }
-        
-        self.statusItem.image = nil;
+
         self.statusItem.title = titleText;
     }
     else {
-        NSImage *image = [NSImage imageNamed:@"status_icon"];
-        [image setTemplate:true];
-        self.statusItem.image = image;
-        self.statusItem.title = nil;
+        self.statusItem.title = @"■";
     }
 }
 

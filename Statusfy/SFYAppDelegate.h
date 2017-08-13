@@ -8,6 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+typedef NS_ENUM(NSUInteger, PlayerState) {
+    playing,
+    paused
+};
+
 @interface SFYAppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;

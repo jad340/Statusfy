@@ -60,8 +60,11 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
         NSString *titleText = [NSString stringWithFormat:@"%@ - %@", trackName, artistName];
         
         if ([self getPlayerStateVisibility]) {
-            NSString *playerState = [self determinePlayerStateText];
-            titleText = [NSString stringWithFormat:@"%@ (%@)", titleText, playerState];
+            PlayerState playerState = [self determinePlayerStateText];
+
+            if (playerState == paused) {
+                titleText = [NSString stringWithFormat:@"(%@)", titleText];
+            }
         }
         
         self.statusItem.image = nil;
@@ -108,22 +111,16 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
     return [self getPlayerStateVisibility] ? NSLocalizedString(@"Hide Player State", nil) : NSLocalizedString(@"Show Player State", nil);
 }
 
-- (NSString *)determinePlayerStateText
+- (PlayerState)determinePlayerStateText
 {
-    NSString *playerStateText = nil;
     NSString *playerStateConstant = [[self executeAppleScript:@"get player state"] stringValue];
-    
+    PlayerState playerState = paused;
+
     if ([playerStateConstant isEqualToString:@"kPSP"]) {
-        playerStateText = NSLocalizedString(@"Playing", nil);
-    }
-    else if ([playerStateConstant isEqualToString:@"kPSp"]) {
-        playerStateText = NSLocalizedString(@"Paused", nil);
-    }
-    else {
-        playerStateText = NSLocalizedString(@"Stopped", nil);
+        playerState = playing;
     }
     
-    return playerStateText;
+    return playerState;
 }
 
 #pragma mark - Toggle Dock Icon

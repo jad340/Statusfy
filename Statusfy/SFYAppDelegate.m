@@ -24,8 +24,11 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
 
 - (void)applicationDidFinishLaunching:(NSNotification * __unused)aNotification
 {
+    //Hide dock icon by default
+    [NSApp setActivationPolicy: NSApplicationActivationPolicyAccessory];
+
     //Initialize the variable the getDockIconVisibility method checks
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:SFYPlayerDockIconPreferenceKey];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:SFYPlayerDockIconPreferenceKey];
     
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     self.statusItem.highlightMode = YES;
@@ -34,7 +37,7 @@ static NSString * const SFYPlayerDockIconPreferenceKey = @"YES";
     
     self.playerStateMenuItem = [[NSMenuItem alloc] initWithTitle:[self determinePlayerStateMenuItemTitle] action:@selector(togglePlayerStateVisibility) keyEquivalent:@""];
     
-    self.dockIconMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Hide Dock Icon", nil) action:@selector(toggleDockIconVisibility) keyEquivalent:@""];
+    self.dockIconMenuItem = [[NSMenuItem alloc] initWithTitle:NSLocalizedString(@"Show Dock Icon", nil) action:@selector(toggleDockIconVisibility) keyEquivalent:@""];
     
     [menu addItem:self.playerStateMenuItem];
     [menu addItem:self.dockIconMenuItem];
